@@ -1,0 +1,36 @@
+serverlessNodeMetaLambdaRole:
+  Type: AWS::IAM::Role
+  Properties:
+    RoleName: serverless-node-${self:custom.stage}-${self:provider.region}-serverlessNodeMetaLambdaRole
+    AssumeRolePolicyDocument:
+      Version: '2012-10-17'
+      Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action: sts:AssumeRole
+    ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+    Policies:
+      - PolicyName: serverless-node-${self:custom.stage}-${self:provider.region}-serverlessNodeMetaLambdaRole
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow # note that these rights are given in the default policy and are required if you want logs out of your lambda(s)
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: arn:aws:logs:${self:provider.region}:#{AWS::AccountId}:log-group:/aws/lambda/*:*:*
+            - Effect: Allow # x-ray permissions
+              Action:
+                - xray:PutTelemetryRecords
+                - xray:PutTraceSegments
+              Resource: '*'
+            - Effect: "Allow"
+              Action:
+                - ssm:GetParametersByPath
+                - ssm:GetParameters
+                - ssm:GetParameter
+              Resource: arn:aws:ssm:*:*:parameter/serverless-node/${self:custom.stage}/Meta*
