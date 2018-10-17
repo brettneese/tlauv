@@ -1,9 +1,8 @@
 "use strict";
-var log = console;
-var router = require("express").Router();
 const AWS = require("aws-sdk");
 const bodyParser = require("body-parser");
-const util = require("util");
+const log = console;
+const router = require("express").Router();
 
 router.use(function(req, res, next) {
   log.info("Proxy router taking control");
