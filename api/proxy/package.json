@@ -1,18 +1,24 @@
 {
-  "name": "@hbkapps/serverless-node-meta",
+  "name": "@tlauv/api-meta",
   "scripts": {
     "prepush": "npm run test:depcheck; npm test",
     "start": "node index.js",
     "test": "mocha index.spec.js",
     "test:watch": "nodemon --watch 'index.js' --watch 'index.spec.js' --exec 'reset; npm test'",
     "test:depcheck": "depcheck",
-    "package": "rm -rf ${npm_package_name##*-}.zip; zip -r ${npm_package_name##*-}.zip ../../functions/${npm_package_name##*-} > packageLog.log"
+    "package": "rm -rf ${npm_package_name##*-}.zip; zip -r ${npm_package_name##*-}.zip ../../api/${npm_package_name##*-} > packageLog.log"
   },
   "dependencies": {
     "@hbkapps/convict": "^4.1.0",
     "@hbkapps/convict-provider-awsssm": "^0.1.2",
     "@hbkapps/logger": "^3.1.4",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-lambda-helper": "^0.1.1",
+    "http-proxy-middleware": "^0.19.0",
     "islambdawarm": "^1.1.0",
-    "lambda-request-context": "^1.1.0"
+    "lambda-request-context": "^1.1.0",
+    "proxy": "^0.2.4",
+    "request": "^2.88.0"
   }
 }

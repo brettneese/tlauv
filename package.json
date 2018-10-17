@@ -1,5 +1,5 @@
 {
-  "name": "serverless-node",
+  "name": "tlauv",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,7 @@
     "start": "sls sls simulate apigateway -p 5000 # update the port here",
     "deploy": "sls deploy --stage ${STAGE:-staging} --aws-s3-accelerate # serverless.yml sets the stage locally to `development` but we never want to deploy there and default to `staging`",
     "install": "lerna bootstrap",
-    "package": "lerna run --scope='@hbkapps/serverless-node-*' --ignore='@hbkapps/serverless-node-utils-*' package # run the `npm run package` script on all functions",
+    "package": "lerna run --scope='@tlauv/api-*' --ignore='@hbkapps/serverless-node-utils-*' package # run the `npm run package` script on all functions",
     "test": "lerna run test",
     "test:integration": "echo 'INTEGRATION TESTS'",
     "test:depcheck": "lerna run test:depcheck # run depcheck tests (`npm test:depcheck`) on each updated module"
@@ -26,7 +26,8 @@
     "mocha": "^5.0.1",
     "request": "^2.83.0",
     "serverless": "^1.26.0",
-    "serverless-log-forwarding": "^1.1.6",
+    "serverless-offline": "^3.27.0",
+    "serverless-plugin-scripts": "^1.0.2",
     "serverless-plugin-simulate": "0.0.17",
     "serverless-prune-plugin": "^1.3.0",
     "serverless-pseudo-parameters": "^1.4.1"

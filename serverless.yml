@@ -23,16 +23,18 @@ package:
   individually: true
 
 plugins:
+  - serverless-plugin-scripts
   - serverless-plugin-simulate
   - serverless-pseudo-parameters
   - serverless-prune-plugin
-  - serverless-log-forwarding
+  - serverless-offline
 
-custom: 
-  logForwarding: 
-    destinationARN: 'arn:aws:lambda:us-east-1:613658333627:function:cloudwatch-logs-to-es-production-handler' # forward all logs to this function to post them to ES
+custom:
   stage: "${opt:stage, self:provider.stage}" # this way we always have a stage
   name: "${self:custom.stage}-${self:service}"
+  scripts:
+    hooks:
+      "deploy:createDeploymentArtifacts": npm run package
   prune:
     automatic: true
     number: 25
@@ -58,14 +60,37 @@ custom:
 #    variable1: value1
 
 functions:
-
   meta:
-    handler: functions/meta/index.handler
+    handler: api/meta/index.handler
+    package:
+      artifact: api/meta/meta.zip
+
     events:
       # an example HTTP event
       - http:
           path: status
           method: GET
+
+  database:
+    handler: api/database/index.handler
+    package:
+      artifact: api/database/database.zip
+
+    events:
+      # an example HTTP event
+      - http:
+          path: database/{proxy+}
+          method: ANY
+
+  proxy:
+    handler: api/proxy/index.handler
+    package:
+      artifact: api/proxy/database.zip
+
+    events:
+      - http:
+          path: proxy/{proxy+}
+          method: ANY
 
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
