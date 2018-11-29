@@ -8,12 +8,19 @@ router.use(function(req, res, next) {
   next();
 });
 
-router.get("/creds", function(req, res, next){
+router.get("/creds", function(req, res, next) {
   res.send("hello creds");
 });
 
-router.post("/creds/:name", function(req, res, next){
-    res.send(req.params.name);
+router.get("/creds/:role", function(req, res, next) {
+  let response = {
+    data: {
+      username: "root-1430158508-126",
+      password: "132ae3ef-5a64-7499-351e-bfe59f3a2a21"
+    }
+  };
+
+  res.send(response);
 });
 
 module.exports = router;

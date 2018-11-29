@@ -13,7 +13,8 @@ router.get("/config", function(req, res, next) {
   res.send("hello config");
 });
 
-router.get("/config/:name", function(req, res, next) {
+// todo this needs to be POST
+router.all("/config/:name", function(req, res, next) {
   let params = {
     TableName: "tlauv-staging-tlauvTable-ZZDF5BP2PVKU",
     Item: {
@@ -34,10 +35,10 @@ router.get("/config/:name", function(req, res, next) {
   docClient.put(params, function(err, data) {
     if (err) {
       log.error(err);
-      res.status(500);
+      res.status(500).send(err);
     } else {
       log.info(data);
-      res.status(204);
+      res.status(204).end();
     }
   });
 });
