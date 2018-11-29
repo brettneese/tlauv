@@ -9,8 +9,10 @@ router.use(function(req, res, next) {
 });
 
 router.use(require("./config/"));
+router.use(require("./creds/"));
+router.use(require("./roles/"));
 
 // needs to match serverless.yml routes
-router.routerPath = ["/database"];
+router.routerPath = ["/database/"];
 
 exports.handler = require("express-lambda-helper").createHandler(router);

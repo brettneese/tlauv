@@ -4,15 +4,15 @@ var log = console;
 var router = require("express").Router();
 
 router.use(function(req, res, next) {
-  log.info("database.config router taking control");
+  log.info("database.creds router taking control");
   next();
 });
 
-router.get("/config", function(req, res, next){
-  res.send("hello config");
+router.get("/creds", function(req, res, next){
+  res.send("hello creds");
 });
 
-router.post("/config/:name", function(req, res, next){
+router.post("/creds/:name", function(req, res, next){
     res.send(req.params.name);
 });
 
