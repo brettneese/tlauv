@@ -85,7 +85,7 @@ functions:
   proxy:
     handler: api/proxy/index.handler
     package:
-      artifact: api/proxy/database.zip
+      artifact: api/proxy/proxy.zip
 
     events:
       - http:
@@ -120,21 +120,19 @@ functions:
 
 resources:
   Resources:
-    tlauv-table: 
+    tlauvTable: 
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
       Properties:
         BillingMode: PAY_PER_REQUEST
-        AttributeDefintions: 
+        AttributeDefinitions: 
           - AttributeName: "Path"
             AttributeType: "S"
           - AttributeName: "Key"
-            AttributeType: "S"
-          - AttributeName: "Value"
             AttributeType: "S"
         KeySchema: 
           - AttributeName: "Path"
             KeyType: "HASH"
           - AttributeName: "Key"
             KeyType: "RANGE"          
-    tlauvDatabaseLambdaRole: ${file(functions/database/resources.yaml):tlauvDatabaseLambdaRole}
+    tlauvDatabaseLambdaRole: ${file(api/database/resources.yaml):tlauvDatabaseLambdaRole}
