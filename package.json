@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "sls sls simulate apigateway -p 5000 # update the port here",
+    "start": "sls simulate apigateway -p 5000 # update the port here",
     "deploy": "sls deploy --stage ${STAGE:-staging} --aws-s3-accelerate # serverless.yml sets the stage locally to `development` but we never want to deploy there and default to `staging`",
     "install": "lerna bootstrap",
     "package": "lerna run --scope='@tlauv/api-*' --ignore='@hbkapps/serverless-node-utils-*' package # run the `npm run package` script on all functions",
