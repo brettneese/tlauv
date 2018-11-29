@@ -1,7 +1,7 @@
-serverlessNodeMetaLambdaRole:
+tlauvDatabaseLambdaRole:
   Type: AWS::IAM::Role
   Properties:
-    RoleName: serverless-node-${self:custom.stage}-${self:provider.region}-serverlessNodeMetaLambdaRole
+    RoleName: tlauv-${self:custom.stage}-${self:provider.region}-DatabaseLambdaRole
     AssumeRolePolicyDocument:
       Version: '2012-10-17'
       Statement:
@@ -13,7 +13,7 @@ serverlessNodeMetaLambdaRole:
     ManagedPolicyArns:
       - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
     Policies:
-      - PolicyName: serverless-node-${self:custom.stage}-${self:provider.region}-serverlessNodeMetaLambdaRole
+      - PolicyName: tlauv-${self:custom.stage}-${self:provider.region}-DatabaseLambdaRole
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -33,4 +33,4 @@ serverlessNodeMetaLambdaRole:
                 - ssm:GetParametersByPath
                 - ssm:GetParameters
                 - ssm:GetParameter
-              Resource: arn:aws:ssm:*:*:parameter/serverless-node/${self:custom.stage}/Meta*
+              Resource: arn:aws:ssm:*:*:parameter/tlauv/${self:custom.stage}/Database*

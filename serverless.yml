@@ -118,6 +118,23 @@ functions:
 #    environment:
 #      variable2: value2
 
-# resources:
-#   Resources:
-#     serverlessNodeMetaLambdaRole: ${file(functions/meta/resources.yaml):serverlessNodeMetaLambdaRole}
+resources:
+  Resources:
+    tlauv-table: 
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefintions: 
+          - AttributeName: "Path"
+            AttributeType: "S"
+          - AttributeName: "Key"
+            AttributeType: "S"
+          - AttributeName: "Value"
+            AttributeType: "S"
+        KeySchema: 
+          - AttributeName: "Path"
+            KeyType: "HASH"
+          - AttributeName: "Key"
+            KeyType: "RANGE"          
+    tlauvDatabaseLambdaRole: ${file(functions/database/resources.yaml):tlauvDatabaseLambdaRole}
