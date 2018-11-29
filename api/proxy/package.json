@@ -1,5 +1,5 @@
 {
-  "name": "@tlauv/api-meta",
+  "name": "@tlauv/api-proxy",
   "scripts": {
     "prepush": "npm run test:depcheck; npm test",
     "start": "node index.js",
