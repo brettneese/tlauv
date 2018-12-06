@@ -4,6 +4,8 @@ const AWS = require("aws-sdk");
 const docClient = new AWS.DynamoDB.DocumentClient();
 const router = require("express").Router();
 const MongoClient = require("mongodb").MongoClient;
+let lib = new require("./lib");
+lib = new lib();
 
 // todo move this into project root? seems like that's a better place for it.
 
@@ -16,68 +18,12 @@ router.get("/parameters", function(req, res, next) {
   res.send("hello params");
 });
 
-router.get("/parameters/:path", function(req, res, next) {
-  let params = {
-    TableName: "tlauv-staging-tlauvTable-ZZDF5BP2PVKU",
-    Key: {
-      Path: "database/roles",
-      Key: req.params.path
-    }
-  };
+router.get("/parameters/:path", async function(req, res, next) {
+  let mongo = await lib.connectToMongo();
+  let params = await lib.getParameters();
+  let users = await lib.createUsers(mongo, params.Item.Value);
 
-  docClient.get(params, function(err, data) {
-
-    // check if creds are cached in dynamodb first, then....
-    
-    if (err) console.log(err);
-    else console.log(data);
-
-    // Connection URL
-    const url = "mongodb://localhost:27017";
-
-    // Database Name
-    const dbName = "myproject";
-
-    // Use connect method to connect to the server
-    MongoClient.connect(
-      url,
-      function(err, client) {
-        console.log("Connected successfully to server");
-
-        data.Item.Value.creation_statements.forEach(element => {
-          const db = client.db(element.db);
-          let createUser = {
-            user: {
-              username: "test",
-              password: "password"
-            },
-            options: {
-              roles: element.roles,
-              customData: element.customData
-              // w: - write concern
-              // wtimeout: - write concern timeout
-              // j: - journal timeout
-            }
-          };
-
-          db.addUser(
-            createUser.user.username,
-            createUser.user.password,
-            createUser.options,
-            function(err, result) {
-
-              // write to dynamo 
-
-              if (err) log.error(err);
-              if (result) res.status(200).send(result);
-            }
-          );
-        });
-
-        client.close();
-      }
-    );
-  });
+  res.status(200).send("ok")
 });
 
 // pass this a role and path, which maps the path (from Param Store) to the role (from tlauv)
