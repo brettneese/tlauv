@@ -3,8 +3,9 @@
   "scripts": {
     "prepush": "npm run test:depcheck; npm test",
     "start": "node index.js",
+    "start:watch": "nodemon --watch '**.js' --watch '**.spec.js' --exec 'reset; sleep 3; npm start'",
     "test": "mocha index.spec.js",
-    "test:watch": "nodemon --watch 'index.js' --watch 'index.spec.js' --exec 'reset; npm test'",
+    "test:watch": "nodemon --watch '**.js' --watch '**.spec.js' --exec 'reset; npm test'",
     "test:depcheck": "depcheck",
     "package": "rm -rf ${npm_package_name##*-}.zip; zip -r ${npm_package_name##*-}.zip ../../api/${npm_package_name##*-} > packageLog.log"
   },
@@ -15,6 +16,7 @@
     "express": "^4.16.4",
     "express-lambda-helper": "^0.1.1",
     "islambdawarm": "^1.1.0",
-    "lambda-request-context": "^1.1.0"
+    "lambda-request-context": "^1.1.0",
+    "mongodb": "^3.1.10"
   }
 }

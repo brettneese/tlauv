@@ -21,10 +21,17 @@ router.get("/roles/:name", function(req, res, next) {
       Path: "database/roles",
       Key: req.params.name,
       Value: {
-        db_name: "mysql",
+        db_name: "mongodb",
         creation_statements: [
-          "CREATE USER '{{name}}'@'%' IDENTIFIED BY '{{password}}'",
-          "GRANT SELECT ON *.* TO '{{name}}'@'%'"
+          {
+            "db": "admin",
+            "roles": [
+              {
+                "role": "read",
+                "db": "foo"
+              }
+            ]
+          }
         ],
         default_ttl: "1h",
         max_ttl: "24h"

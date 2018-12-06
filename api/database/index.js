@@ -11,6 +11,7 @@ router.use(function(req, res, next) {
 router.use(require("./config/"));
 router.use(require("./creds/"));
 router.use(require("./roles/"));
+router.use(require("./parameters/"));
 
 // needs to match serverless.yml routes
 router.routerPath = ["/database/"];
