@@ -4,8 +4,8 @@ const AWS = require("aws-sdk");
 const docClient = new AWS.DynamoDB.DocumentClient();
 const router = require("express").Router();
 const MongoClient = require("mongodb").MongoClient;
-let lib = new require("./lib");
-lib = new lib();
+const lib = require("./lib");
+
 
 // todo move this into project root? seems like that's a better place for it.
 
@@ -19,9 +19,9 @@ router.get("/parameters", function(req, res, next) {
 });
 
 router.get("/parameters/:path", async function(req, res, next) {
-  let mongo = await lib.connectToMongo();
+  let mongoClient = await lib.connectToMongo();
   let params = await lib.getParameters();
-  let users = await lib.createUsers(mongo, params.Item.Value);
+  let users = await lib.createUsers(mongoClient, params.Item.Value);
 
   res.status(200).send("ok")
 });

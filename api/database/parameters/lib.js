@@ -2,25 +2,17 @@ const AWS = require("aws-sdk");
 const docClient = new AWS.DynamoDB.DocumentClient();
 const MongoClient = require("mongodb").MongoClient;
 
-function Lib() {
-    // todo parameterize this
-    this.url = "mongodb://localhost:27017";
 
-  // // always initialize all instance properties
-  // this.bar = bar;
-  // this.baz = 'baz'; // default value
-}
-
-Lib.prototype.connectToMongo = async function connectToMongo(url) {
-  return await MongoClient.connect(this.url);
+exports.connectToMongo = async function connectToMongo(url = "mongodb://localhost:27017") {
+  return Promise.resolve(MongoClient.connect(url));
 };
 
-Lib.prototype.getParameters = async function(path) {
+exports.getParameters = async function(path) {
 //   let params = {
 //     TableName: "tlauv-staging-tlauvTable-ZZDF5BP2PVKU",
-//     Key: {
+//      Key: {
 //       Path: "database/roles",
-//       Key: path
+//       Key: pathd
 //     }
 //   };
 
@@ -44,10 +36,8 @@ Lib.prototype.getParameters = async function(path) {
   return(Promise.resolve(stub));
 };
 
-Lib.prototype.createUsers = async function(mongoClient, role) {
-  client = await this.connectToMongo(this.url);
-
-  const db = client.db(role.db);
+exports.createUsers = async function(mongoClient, role) {
+  const db = mongoClient.db(role.db);
 
   role.creation_statements.forEach(async(element) => {
     let createUser = {
@@ -71,7 +61,5 @@ Lib.prototype.createUsers = async function(mongoClient, role) {
     );
   });
 
-  client.close();
+  mongoClient.close();
 };
-
-module.exports = Lib;
