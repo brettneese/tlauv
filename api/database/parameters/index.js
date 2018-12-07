@@ -26,9 +26,22 @@ router.get("/parameters/:path", async function(req, res, next) {
   res.status(200).send("ok")
 });
 
-// pass this a role and path, which maps the path (from Param Store) to the role (from tlauv)
+// pass this a role, path, and value template which maps the path (from Param Store) to the role (from tlauv)
 router.post("/parameters/:path", function(req, res, next) {
-  log.info(data);
+  const stub = {
+    Item: {
+      Path: "database/parameters",
+      Value: {
+        role: "foo_role",
+        max_ttl: "24h",
+        value: "mongodb://{{username}}:{{password}}@localhost:27017"
+      },
+      Key: "/api/development/foo_param"
+    }
+  };
+
+
+  log.info(stub);
 });
 
 module.exports = router;
