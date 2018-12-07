@@ -6,7 +6,6 @@ const router = require("express").Router();
 const MongoClient = require("mongodb").MongoClient;
 const controller = require("./controller");
 
-
 // todo move this into project root? seems like that's a better place for it.
 
 router.use(function(req, res, next) {
@@ -23,9 +22,9 @@ router.get("/parameters/:path", async function(req, res, next) {
   const roles = await controller.getRoles();
   const params = await controller.getParameters(req.params.path);
   const users = await controller.createUsers(mongoClient, roles);
-  const output =  await controller.craftOutput(params, users);
+  const output = await controller.craftOutput(params, users);
 
-  res.status(200).send(output.toString())
+  res.status(200).send(output.toString());
 });
 
 // pass this a role, path, and value template which maps the path (from Param Store) to the role (from tlauv)
@@ -41,7 +40,6 @@ router.post("/parameters/:path", function(req, res, next) {
       Key: "/api/development/foo_param"
     }
   };
-
 
   log.info(stub);
 });

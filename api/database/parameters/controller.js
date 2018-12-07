@@ -101,8 +101,7 @@ exports.createUsers = async function(mongoClient, roles) {
     };
 
     users.push(createUser.user);
-
-
+    
     user = await db.addUser(
       createUser.user.username,
       createUser.user.password,
