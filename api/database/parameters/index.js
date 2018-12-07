@@ -19,11 +19,15 @@ router.get("/parameters", function(req, res, next) {
 });
 
 router.get("/parameters/:path", async function(req, res, next) {
-  let mongoClient = await controller.connectToMongo();
-  let params = await controller.getParameters();
-  let users = await controller.createUsers(mongoClient, params.Item.Value);
+  const mongoClient = await controller.connectToMongo();
+  const roles = await controller.getRoles();
+  const params = await controller.getParameters(req.params.path);
+  const users = await controller.createUsers(mongoClient, roles.Item.Value);
+  const output =  await controller.craftOutput(params, users);
 
-  res.status(200).send("ok")
+
+
+  res.status(200).send(output.toString())
 });
 
 // pass this a role, path, and value template which maps the path (from Param Store) to the role (from tlauv)

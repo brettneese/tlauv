@@ -17,6 +17,7 @@
     "express-lambda-helper": "^0.1.1",
     "islambdawarm": "^1.1.0",
     "lambda-request-context": "^1.1.0",
+    "micromustache": "^5.4.0",
     "mongodb": "^3.1.10"
   }
 }
