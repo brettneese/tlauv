@@ -2,6 +2,7 @@ const AWS = require("aws-sdk");
 const docClient = new AWS.DynamoDB.DocumentClient();
 const MongoClient = require("mongodb").MongoClient;
 const micromustache = require("micromustache");
+const crypto = require("crypto-extra");
 
 exports.connectToMongo = async function connectToMongo(
   url = "mongodb://localhost:27017"
@@ -38,6 +39,16 @@ exports.getRoles = async function(path) {
   return Promise.resolve(stub);
 };
 
+generateDynamicSecret = function(prefix, length = "64") {
+  let secret = crypto.randomString(length);
+
+  if (prefix) {
+    return prefix + "-" + secret;
+  }
+
+  return secret;
+};
+
 exports.getParameters = async function(path) {
   const stub = {
     Item: {
@@ -57,7 +68,6 @@ exports.getParameters = async function(path) {
 // todo make a better name
 // basically this does variable substitition to merge the created users with the param
 exports.craftOutput = async function(parameters, users) {
-
   // todo check if array
 
   const oldValue = parameters.Item.Value.value;
@@ -67,15 +77,19 @@ exports.craftOutput = async function(parameters, users) {
   return output;
 };
 
-exports.createUsers = async function(mongoClient, role) {
+exports.createUsers = async function(mongoClient, roles) {
+  console.log(roles);
+
+  const role = roles.Value;
   const db = mongoClient.db(role.db);
   const users = [];
 
   role.creation_statements.forEach(async element => {
+
     let createUser = {
       user: {
-        username: "test",
-        password: "password"
+        username: generateDynamicSecret(roles.Key, 3),
+        password: generateDynamicSecret()
       },
       options: {
         roles: element.roles,
@@ -86,15 +100,17 @@ exports.createUsers = async function(mongoClient, role) {
       }
     };
 
-    // user = await db.addUser(
-    //   createUser.user.username,
-    //   createUser.user.password,
-    //   createUser.options
-    // );
-
     users.push(createUser.user);
+
+
+    user = await db.addUser(
+      createUser.user.username,
+      createUser.user.password,
+      createUser.options
+    );
+
   });
-  
+
   mongoClient.close();
 
   return Promise.resolve(users);

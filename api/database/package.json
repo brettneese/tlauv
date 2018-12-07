@@ -13,6 +13,7 @@
     "@hbkapps/convict": "^4.1.0",
     "@hbkapps/convict-provider-awsssm": "^0.1.2",
     "@hbkapps/logger": "^3.1.4",
+    "crypto-extra": "^0.4.0",
     "express": "^4.16.4",
     "express-lambda-helper": "^0.1.1",
     "islambdawarm": "^1.1.0",

@@ -22,10 +22,8 @@ router.get("/parameters/:path", async function(req, res, next) {
   const mongoClient = await controller.connectToMongo();
   const roles = await controller.getRoles();
   const params = await controller.getParameters(req.params.path);
-  const users = await controller.createUsers(mongoClient, roles.Item.Value);
+  const users = await controller.createUsers(mongoClient, roles);
   const output =  await controller.craftOutput(params, users);
-
-
 
   res.status(200).send(output.toString())
 });
